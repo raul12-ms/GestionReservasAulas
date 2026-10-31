@@ -1,3 +1,7 @@
+> ## URL del repositorio donde se encuentra la aplicación
+>
+> **https://github.com/raul12-ms/GestionReservasAulas.git**
+
 # Gestión de reservas de aulas
 
 Aplicación web para gestionar la reserva de aulas de un centro educativo. Permite consultar aulas y profesores, crear reservas para una fecha y una franja horaria, filtrar aulas por capacidad y disponibilidad de ordenadores y eliminar reservas existentes.
