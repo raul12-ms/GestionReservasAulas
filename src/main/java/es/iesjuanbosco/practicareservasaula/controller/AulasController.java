@@ -2,6 +2,8 @@ package es.iesjuanbosco.practicareservasaula.controller;
 
 import es.iesjuanbosco.practicareservasaula.entity.Aulas;
 import es.iesjuanbosco.practicareservasaula.repository.AulasRepository;
+import es.iesjuanbosco.practicareservasaula.service.AulasService;
+import es.iesjuanbosco.practicareservasaula.service.ReservasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,14 @@ public class AulasController {
     @Autowired
     private AulasRepository aulasRepo;
 
+    // Inyección del servicio
+    private final AulasService aulasService;
+
+    // Constructor para inyección de dependencias del servicio
+    public AulasController(AulasService aulasService) {
+        this.aulasService = aulasService;
+    }
+
 
     // GET: http://localhost:8080/aulas -> devuelve todas las aulas
     // GET: http://localhost:8080/aulas?capacidad=20 -> devuelve las aulas cuya capacidad sea superior a 20
@@ -25,27 +35,15 @@ public class AulasController {
     @GetMapping("/aulas")
     public List<Aulas> findAll(
             @RequestParam(defaultValue = "-1") int capacidad,
-            @RequestParam(required = false) Boolean tieneOrdenadores
+            @RequestParam(required = false) Boolean tieneOrdenadores   // required = false indica que el parámetro de consulta es opcional, si no se pasa, se devuelve null
     ) {
         // Recogemos todas las aulas de la base de datos y las filtramos según los parámetros de consulta
         List<Aulas> aulas = aulasRepo.findAll();
-        List<Aulas> aulasConsultadas = new ArrayList<>();
-
-        for (Aulas aula : aulas) {
-            // Si se pasa un parámetro de consulta "capacidad" mayor que 0, devuelve las aulas cuya capacidad sea superior a ese número
-            if (aula.getCapacidad() > capacidad) {
-                // Si se pasa un parámetro de consulta "tieneOrdenadores" con valor true, devuelve las aulas que tienen ordenadores
-                if (tieneOrdenadores == null || aula.getTieneOrdenadores() ==  tieneOrdenadores) {
-                    aulasConsultadas.add(aula);
-                }
-            }
-        }
         
-        return aulasConsultadas;
+        return aulasService.validarFiltros(aulas, capacidad, tieneOrdenadores);
     }
 
 
-    // Ejemplo: /aulas/21?capacidad=20
     // GET: http://localhost:8080/aulas/{id} -> devuelve una aula por id
     @GetMapping("/aulas/{id}")
     public ResponseEntity<Aulas> findById(@PathVariable Long id) {
