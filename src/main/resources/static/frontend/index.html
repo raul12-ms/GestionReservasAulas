@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gestión de reservas de aulas">
+    <title>Reservas de aulas</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-content">
+        <div>
+            <p class="eyebrow">Centro educativo</p>
+            <h1>Reservas de aulas</h1>
+            <p class="subtitle">Organiza las clases y consulta la disponibilidad de espacios.</p>
+        </div>
+        <span class="header-mark" aria-hidden="true">RA</span>
+    </div>
+</header>
+
+<main class="container main-content">
+    <section class="summary-grid" aria-label="Resumen">
+        <article class="summary-card">
+            <span class="summary-label">Reservas registradas</span>
+            <strong id="reservas-count">—</strong>
+        </article>
+        <article class="summary-card">
+            <span class="summary-label">Aulas disponibles</span>
+            <strong id="aulas-count">—</strong>
+        </article>
+        <article class="summary-card">
+            <span class="summary-label">Última actualización</span>
+            <strong id="last-update">—</strong>
+        </article>
+    </section>
+
+    <div id="global-status" class="status" role="status" aria-live="polite"></div>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">Nueva reserva</p>
+                <h2>Crear una reserva</h2>
+            </div>
+            <span class="step-badge">01</span>
+        </div>
+        <form id="reserva-form" class="form-grid">
+            <label>
+                Fecha de la reserva
+                <input id="fechaReserva" name="fechaReserva" type="date" required>
+            </label>
+            <label>
+                Aula
+                <select id="aula" name="aula" required>
+                    <option value="">Cargando aulas…</option>
+                </select>
+            </label>
+            <label>
+                Profesor
+                <select id="profesor" name="profesor" required>
+                    <option value="">Cargando profesores…</option>
+                </select>
+            </label>
+            <label>
+                Franja horaria
+                <select id="franjaHoraria" name="franjaHoraria" required>
+                    <option value="">Cargando franjas…</option>
+                </select>
+            </label>
+            <label class="field-wide">
+                Motivo
+                <textarea id="motivo" name="motivo" rows="3" maxlength="50"
+                          placeholder="Ej.: Examen de matemáticas" required></textarea>
+            </label>
+            <div class="form-actions field-wide">
+                <button class="button button-primary" type="submit">Crear reserva</button>
+                <button class="button button-secondary" type="reset">Limpiar</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">Explorar espacios</p>
+                <h2>Aulas disponibles</h2>
+            </div>
+        </div>
+        <form id="aulas-filter-form" class="filter-grid">
+            <label>
+                Ordenadores
+                <select id="ordenadores" name="ordenadores">
+                    <option value="">Todas</option>
+                    <option value="true">Con ordenadores</option>
+                    <option value="false">Sin ordenadores</option>
+                </select>
+            </label>
+            <label>
+                Capacidad superior a
+                <input id="capacidad" name="capacidad" type="number" min="0" placeholder="Ej.: 20">
+            </label>
+            <div class="filter-actions">
+                <button class="button button-primary" type="submit">Aplicar filtros</button>
+                <button id="clear-filters" class="button button-secondary" type="button">Restablecer</button>
+            </div>
+        </form>
+        <div id="aulas-list" class="room-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-heading heading-with-action">
+            <div>
+                <p class="eyebrow">Agenda</p>
+                <h2>Reservas existentes</h2>
+            </div>
+            <button id="refresh-reservas" class="button button-secondary" type="button">Actualizar</button>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Aula</th>
+                    <th>Profesor</th>
+                    <th>Franja</th>
+                    <th>Motivo</th>
+                    <th><span class="sr-only">Acciones</span></th>
+                </tr>
+                </thead>
+                <tbody id="reservas-list"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>
